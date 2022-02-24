@@ -190,7 +190,30 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     if problem.isGoalState(node1):
         return []
 
+    frontier = util.PriorityQueue()
+    node = []
+    frontier.push((node1, [], 0), 0)
 
+    ##elif problem does not start at goal state, frontier pushes (starting node, path, cost, priority)
+
+    while not frontier.isEmpty():
+
+        state, path, cost1 = frontier.pop()
+
+        if state not in node:
+            node.append(state)
+
+            ##if curr state not in visited nodes, add curr state.
+
+            if problem.isGoalState(state):
+                return path
+
+            ##is curr state is goal, return path.
+
+            for incstate, singlepath, cost2 in problem.getSuccessors(state):
+                frontier.push((incstate, path + [singlepath], cost1 + cost2),
+                              cost1 + cost2 + heuristic(incstate, problem))
+                ##pushes next state, total path, total cost, then priority heuristoc onto the pq.
 
     util.raiseNotDefined()
 
